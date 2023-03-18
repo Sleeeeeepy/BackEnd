@@ -12,6 +12,8 @@ public enum UserExceptionType {
 
     DUPLICATE_USER_NICKNAME("중복된 닉네임이 있습니다.", "U006"),
     DUPLICATE_USER_EMAIL("중복된 이메일이 있습니다.", "U007"),
+
+    FAIL_LOGIN("이메일 또는 비밀번호를 잘못 입력했습니다.", "U008"),
     ;
 
 
