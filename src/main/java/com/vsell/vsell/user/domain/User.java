@@ -1,80 +1,101 @@
 package com.vsell.vsell.user.domain;
 
+import com.vsell.vsell.user.domain.exception.UserException;
+import com.vsell.vsell.user.domain.exception.UserExceptionType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(length=50, unique = true, nullable = false)
     private String email;
 
-    @Column
+    @Column(length=20, nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(length=10, unique = true, nullable = false)
     private String nickName;
 
-    @Column
+    @Column(nullable = false)
     private Instant birthDate;
 
-    public static class Builder{
-        private String email;
-        private String password;
-        private String name;
-        private String nickName;
-        private Instant birthDate;
 
-        public Builder email(String email){
-            this.email=email;
-            return this;
-        }
+    @Builder
+    public User(String name, String email, String password, String nickName, Instant birthDate){
+        assertValidName(name);
+        assertValidEmail(email);
+        assertValidPassword(password);
+        assertValidNickName(nickName);
+        assertValidBirthDate(birthDate);
 
-        public Builder password(String password){
-            this.password=password;
-            return this;
-        }
-
-        public Builder name(String name){
-            this.name=name;
-            return this;
-        }
-
-        public Builder nickName(String nickName){
-            this.nickName=nickName;
-            return this;
-        }
-
-        public Builder birthDate(Instant birthDate) {
-            this.birthDate=birthDate;
-            return this;
-        }
-        public User build(){
-            return new User(this);
-        }
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
+        this.birthDate = birthDate;
 
     }
 
-    private User(Builder builder){
-        this.name=builder.name;
-        this.email= builder.email;
-        this.password=builder.password;
-        this.nickName=builder.nickName;
-        this.birthDate=builder.birthDate;
+    private void assertValidName(String name){
+        if(name == null){
+            throw new UserException(UserExceptionType.INVALID_USER_NAME);
+        }
+        if(name.length() > 255){
+            throw new UserException(UserExceptionType.INVALID_USER_NAME);
+        }
     }
 
+    private void assertValidEmail(String email){
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if(email==null){
+            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+        }
+        if(!Pattern.compile(regexPattern).matcher(email).matches()){
+            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+        }
+        if(email.length() > 50){
+            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+        }
+    }
+
+    private void assertValidPassword(String password){
+        if(password == null){
+            throw new UserException(UserExceptionType.INVALID_USER_PASSWORD);
+        }
+        if(password.length() > 20){
+            throw new UserException(UserExceptionType.INVALID_USER_PASSWORD);
+        }
+    }
+
+    private void assertValidNickName(String nickName){
+        if(nickName == null){
+            throw new UserException(UserExceptionType.INVALID_USER_NICKNAME);
+        }
+        if(nickName.length() > 10){
+            throw new UserException(UserExceptionType.INVALID_USER_NICKNAME);
+        }
+    }
+
+    private void assertValidBirthDate(Instant birthDate){
+        if(birthDate == null){
+            throw new UserException(UserExceptionType.INVALID_USER_BIRTHDATE);
+        }
+    }
 
 }
