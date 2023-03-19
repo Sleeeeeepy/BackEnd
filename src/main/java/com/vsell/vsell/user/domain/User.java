@@ -1,14 +1,11 @@
 package com.vsell.vsell.user.domain;
 
-import com.vsell.vsell.user.domain.exception.UserException;
+import com.vsell.vsell.user.domain.exception.CustomUserException;
 import com.vsell.vsell.user.domain.exception.UserExceptionType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 @Entity
@@ -53,10 +50,10 @@ public class User {
 
     private void assertValidName(String name){
         if(name == null){
-            throw new UserException(UserExceptionType.INVALID_USER_NAME);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_NAME);
         }
         if(name.length() > 255){
-            throw new UserException(UserExceptionType.INVALID_USER_NAME);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_NAME);
         }
     }
 
@@ -64,37 +61,37 @@ public class User {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         if(email==null){
-            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_EMAIL);
         }
         if(!Pattern.compile(regexPattern).matcher(email).matches()){
-            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_EMAIL);
         }
         if(email.length() > 50){
-            throw new UserException(UserExceptionType.INVALID_USER_EMAIL);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_EMAIL);
         }
     }
 
     private void assertValidPassword(String password){
         if(password == null){
-            throw new UserException(UserExceptionType.INVALID_USER_PASSWORD);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
         }
         if(password.length() > 20){
-            throw new UserException(UserExceptionType.INVALID_USER_PASSWORD);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
         }
     }
 
     private void assertValidNickName(String nickName){
         if(nickName == null){
-            throw new UserException(UserExceptionType.INVALID_USER_NICKNAME);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_NICKNAME);
         }
         if(nickName.length() > 10){
-            throw new UserException(UserExceptionType.INVALID_USER_NICKNAME);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_NICKNAME);
         }
     }
 
     private void assertValidBirthDate(Instant birthDate){
         if(birthDate == null){
-            throw new UserException(UserExceptionType.INVALID_USER_BIRTHDATE);
+            throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
         }
     }
 
