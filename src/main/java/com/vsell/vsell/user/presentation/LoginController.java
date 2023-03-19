@@ -26,7 +26,7 @@ public class LoginController {
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         JwtTokenDto jwtTokenDto = loginService.login(loginDto);
 
-        loginResponseDto.setStatus(ResponseStatusType.FAIL);
+        loginResponseDto.setStatus(ResponseStatusType.SUCCESS);
         loginResponseDto.setData(jwtTokenDto);
 
         return new ResponseEntity<LoginResponseDto>(loginResponseDto, HttpStatus.OK);

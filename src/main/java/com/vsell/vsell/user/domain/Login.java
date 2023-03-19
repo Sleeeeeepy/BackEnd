@@ -22,13 +22,12 @@ public class Login {
 
     public JwtTokenDto login(String email, String password) {
         User user = userRepository.findByEmail(email);
-        password = passwordEncoder.encode(password);
 
         if (user == null) {
             throw new CustomUserException(UserExceptionType.FAIL_LOGIN);
         }
 
-        if (!password.equals(user.getPassword())) {
+        if (!passwordEncoder.matches(password,user.getPassword())) {
             throw new CustomUserException(UserExceptionType.FAIL_LOGIN);
         }
 

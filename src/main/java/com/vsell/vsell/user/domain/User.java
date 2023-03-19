@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Getter
+@Table(name="users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
@@ -19,7 +20,7 @@ public class User {
     @Column(length=50, unique = true, nullable = false)
     private String email;
 
-    @Column(length=20, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
@@ -75,9 +76,9 @@ public class User {
         if(password == null){
             throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
         }
-        if(password.length() > 20){
-            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
-        }
+//        if(password.length() > 20){
+//            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
+//        }
     }
 
     private void assertValidNickName(String nickName){

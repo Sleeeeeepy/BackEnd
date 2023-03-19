@@ -23,9 +23,9 @@ public class JwtProvider {
     private String refreshSecretKey;
 
     @Value("${jwt.access.expire-ms}")
-    private String accessExpireMs;
+    private long accessExpireMs;
     @Value("${jwt.refresh.expire-ms}")
-    private String refreshExpireMs;
+    private long refreshExpireMs;
 
     @PostConstruct protected void init(){
         accessSecretKey = Base64.getEncoder().encodeToString(accessSecretKey.getBytes());

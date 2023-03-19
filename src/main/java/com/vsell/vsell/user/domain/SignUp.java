@@ -37,7 +37,6 @@ public class SignUp {
                             .build();
 
         userRepository.save(user);
-
     }
 
     private boolean isExistEmail(String email){

@@ -1,10 +1,11 @@
 package com.vsell.vsell.user.dto;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 @Getter
 @Setter
@@ -16,5 +17,9 @@ public class SignUpDto {
 
     private String name;
     private String nickName;
-    private Instant birthDate;
+    private String birthDate;
+
+    public Instant getBirthDate() {
+        return LocalDate.parse(birthDate).atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
 }
