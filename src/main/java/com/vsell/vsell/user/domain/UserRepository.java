@@ -1,6 +1,7 @@
 package com.vsell.vsell.user.domain;
 
 public interface UserRepository {
-    public User findByEmail(String email);
-    public void save(User user);
+    User findByEmail(String email);
+    User findByNickName(String nickName);
+    void save(User user);
 }
