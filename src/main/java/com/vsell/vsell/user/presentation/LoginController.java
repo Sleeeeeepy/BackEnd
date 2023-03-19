@@ -1,8 +1,10 @@
 package com.vsell.vsell.user.presentation;
 
+import com.vsell.vsell.response.ResponseStatusType;
 import com.vsell.vsell.user.application.LoginService;
 import com.vsell.vsell.user.dto.JwtTokenDto;
 import com.vsell.vsell.user.dto.LoginDto;
+import com.vsell.vsell.user.dto.LoginResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,13 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenDto> login(@RequestBody LoginDto loginDto){
-        return new ResponseEntity<JwtTokenDto>(loginService.login(loginDto), HttpStatus.OK);
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto){
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
+        JwtTokenDto jwtTokenDto = loginService.login(loginDto);
+
+        loginResponseDto.setStatus(ResponseStatusType.FAIL);
+        loginResponseDto.setData(jwtTokenDto);
+
+        return new ResponseEntity<LoginResponseDto>(loginResponseDto, HttpStatus.OK);
     }
 }

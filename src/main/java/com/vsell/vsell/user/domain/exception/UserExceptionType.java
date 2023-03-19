@@ -15,6 +15,7 @@ public enum UserExceptionType {
     DUPLICATE_USER_EMAIL("중복된 이메일이 있습니다.", "U007", HttpStatus.BAD_REQUEST),
 
     FAIL_LOGIN("이메일 또는 비밀번호를 잘못 입력했습니다.", "U008", HttpStatus.BAD_REQUEST),
+    INVALID_PASSWORD_AGAIN("비밀번호가 다릅니다.", "U009", HttpStatus.BAD_REQUEST)
     ;
 
     private final String message;
