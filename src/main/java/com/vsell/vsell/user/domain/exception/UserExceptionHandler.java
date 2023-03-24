@@ -1,4 +1,4 @@
-package com.vsell.vsell.security.exception;
+package com.vsell.vsell.user.domain.exception;
 
 
 import com.vsell.vsell.response.ResponseStatusType;
