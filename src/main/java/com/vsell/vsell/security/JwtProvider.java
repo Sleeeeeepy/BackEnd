@@ -9,6 +9,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -27,10 +30,19 @@ public class JwtProvider {
     @Value("${jwt.refresh.expire-ms}")
     private long refreshExpireMs;
 
+    private final UserSecurityService userSecurityService;
+
+    public JwtProvider(UserSecurityService userSecurityService) {
+        this.userSecurityService = userSecurityService;
+//        accessSecretKey = Base64.getEncoder().encodeToString(accessSecretKey.getBytes());
+//        refreshSecretKey = Base64.getEncoder().encodeToString(refreshSecretKey.getBytes());
+    }
+
     @PostConstruct protected void init(){
         accessSecretKey = Base64.getEncoder().encodeToString(accessSecretKey.getBytes());
         refreshSecretKey = Base64.getEncoder().encodeToString(refreshSecretKey.getBytes());
     }
+
 
     public String createAccessToken(String email){
         Claims claims = Jwts.claims().setSubject(email);
@@ -79,6 +91,24 @@ public class JwtProvider {
             throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
         }
     }
+
+    public Authentication getAuthentication(String accessToken){
+        UserDetails userDetails = userSecurityService.loadUserByUsername(getAccessTokenEmail(accessToken));
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public String getAccessTokenEmail(String token){
+        validateAccessToken(token);
+        return Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getRefreshTokenEmail(String token){
+        validateRefreshToken(token);
+        return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
+
+    }
+
 
     public String resolveToken(HttpServletRequest req){
         String token = req.getHeader("Authorization");

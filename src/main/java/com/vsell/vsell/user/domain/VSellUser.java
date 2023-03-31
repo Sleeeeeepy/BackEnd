@@ -6,13 +6,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Entity
 @Getter
 @Table(name="users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class VSellUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -32,9 +34,15 @@ public class User {
     @Column(nullable = false)
     private Instant birthDate;
 
+    @Column(nullable = false)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name="USER_ROLE")
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> userRoles;
+
 
     @Builder
-    public User(String name, String email, String password, String nickName, Instant birthDate){
+    public VSellUser(String name, String email, String password, String nickName, Instant birthDate){
         assertValidName(name);
         assertValidEmail(email);
         assertValidPassword(password);
@@ -46,6 +54,10 @@ public class User {
         this.password = password;
         this.nickName = nickName;
         this.birthDate = birthDate;
+
+        //TODO: admin은 직접 db쿼리로 수정하도록 할 것인지 상의 필요.
+        this.userRoles = EnumSet.noneOf(UserRole.class);
+        this.userRoles.add(UserRole.ROLE_USER);
 
     }
 

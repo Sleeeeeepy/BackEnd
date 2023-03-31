@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Login {
-    private final UserRepository userRepository;
+    private final VSellUserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public Login(UserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
+    public Login(VSellUserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
     }
 
     public JwtTokenDto login(String email, String password) {
-        User user = userRepository.findByEmail(email);
+        VSellUser user = userRepository.findByEmail(email);
 
         if (user == null) {
             throw new CustomUserException(UserExceptionType.FAIL_LOGIN);

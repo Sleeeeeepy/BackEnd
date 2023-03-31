@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SignUp {
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final VSellUserRepository userRepository;
 
-    public SignUp(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public SignUp(PasswordEncoder passwordEncoder, VSellUserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
@@ -28,7 +28,7 @@ public class SignUp {
             throw new CustomUserException(UserExceptionType.DUPLICATE_USER_NICKNAME);
         }
 
-        User user = new User.UserBuilder()
+        VSellUser user = new VSellUser.VSellUserBuilder()
                             .name(signUpDto.getName())
                             .birthDate(signUpDto.getBirthDate())
                             .email(signUpDto.getEmail())
@@ -40,16 +40,24 @@ public class SignUp {
     }
 
     private boolean isExistEmail(String email){
-        if(userRepository.findByEmail(email) != null){
-            return true;
+        try{
+            userRepository.findByEmail(email);
         }
-        return false;
+        catch(CustomUserException ex){
+            if(ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_EMAIL.getErrorCode()))
+                return false;
+        }
+        return true;
     }
 
     private boolean isExistNickName(String nickName){
-        if(userRepository.findByNickName(nickName) != null){
-            return true;
+        try{
+            userRepository.findByNickName(nickName);
         }
-        return false;
+        catch(CustomUserException ex){
+            if(ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_NICKNAME.getErrorCode()))
+                return false;
+        }
+        return true;
     }
 }
