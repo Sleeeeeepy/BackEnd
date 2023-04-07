@@ -2,9 +2,9 @@ package com.vsell.vsell.user.domain;
 
 
 import com.vsell.vsell.security.JwtProvider;
+import com.vsell.vsell.security.dto.JwtTokenDto;
 import com.vsell.vsell.user.domain.exception.CustomUserException;
 import com.vsell.vsell.user.domain.exception.UserExceptionType;
-import com.vsell.vsell.security.dto.JwtTokenDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -27,14 +27,14 @@ public class Login {
             throw new CustomUserException(UserExceptionType.FAIL_LOGIN);
         }
 
-        if (!passwordEncoder.matches(password,user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomUserException(UserExceptionType.FAIL_LOGIN);
         }
 
         return createToken(email);
     }
 
-    private JwtTokenDto createToken(String email){
+    private JwtTokenDto createToken(String email) {
         String accessToken = jwtProvider.createAccessToken(email);
         String refreshToken = jwtProvider.createRefreshToken(email);
 

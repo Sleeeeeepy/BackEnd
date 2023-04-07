@@ -9,13 +9,18 @@ import com.vsell.vsell.user.application.ProfileHandlerService;
 import com.vsell.vsell.user.domain.VSellUser;
 import com.vsell.vsell.user.domain.exception.CustomUserException;
 import com.vsell.vsell.user.domain.exception.UserExceptionType;
-import com.vsell.vsell.user.dto.*;
+import com.vsell.vsell.user.dto.InformationModifyDto;
+import com.vsell.vsell.user.dto.ProfileDto;
+import com.vsell.vsell.user.dto.VSellUserDto;
+import com.vsell.vsell.user.dto.VSellUserResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -34,10 +39,10 @@ public class UserInformationController {
     }
 
     @PostMapping
-    public ResponseEntity<VSellUserResponseDto> modifyUserInformation(HttpServletRequest request, @RequestBody InformationModifyDto informationModifyDto){
-        String email = userSecurityService.getLoginUser();
+    public ResponseEntity<VSellUserResponseDto> modifyUserInformation(HttpServletRequest request, @RequestBody InformationModifyDto informationModifyDto) {
+        Optional<String> email = userSecurityService.getLoginUser();
 
-        if(!email.equals(informationModifyDto.getEmail())){
+        if (!email.get().equals(informationModifyDto.getEmail())) {
             throw new CustomUserException(UserExceptionType.FORBIDDEN);
         }
 
@@ -52,10 +57,10 @@ public class UserInformationController {
     }
 
     @PostMapping(value = "/profile")
-    public ResponseEntity<VSellUserResponseDto> modifyUserProfile(HttpServletRequest request, @RequestPart MultipartFile profile, @RequestPart String email){
-        String tokenEmail = userSecurityService.getLoginUser();
+    public ResponseEntity<VSellUserResponseDto> modifyUserProfile(HttpServletRequest request, @RequestPart MultipartFile profile, @RequestPart String email) {
+        Optional<String> tokenEmail = userSecurityService.getLoginUser();
 
-        if(!tokenEmail.equals(email)){
+        if (!tokenEmail.get().equals(email)) {
             throw new CustomUserException(UserExceptionType.FORBIDDEN);
         }
 
@@ -70,7 +75,7 @@ public class UserInformationController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Resource> getProfile(@RequestParam String email){
+    public ResponseEntity<Resource> getProfile(@RequestParam String email) {
         ProfileDto profile = profileHandlerService.getProfile(email);
 
 
@@ -78,7 +83,7 @@ public class UserInformationController {
     }
 
 
-    private VSellUserDto mapVSellUserToDto(VSellUser user){
+    private VSellUserDto mapVSellUserToDto(VSellUser user) {
         VSellUserDto vSellUserDto = new VSellUserDto();
         vSellUserDto.setBirthDate(user.getBirthDate());
         vSellUserDto.setEmail(user.getEmail());

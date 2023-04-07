@@ -16,19 +16,18 @@ public enum UserExceptionType {
 
     FAIL_LOGIN("이메일 또는 비밀번호를 잘못 입력했습니다.", "U008", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD_AGAIN("비밀번호가 다릅니다.", "U009", HttpStatus.BAD_REQUEST),
-    
+
     NOT_EXIST_EMAIL("존재하지 않는 이메일 입니다.", "U010", HttpStatus.BAD_REQUEST),
     NOT_EXIST_NICKNAME("존재하지 않는 유저입니다.", "U011", HttpStatus.BAD_REQUEST),
     FORBIDDEN("권한이 없습니다.", "U012", HttpStatus.FORBIDDEN),
     INVALID_PROFILE_TYPE("이미지 파일이 아닙니다.", "U013", HttpStatus.BAD_REQUEST),
-    NOT_EXIST_PROFILE("해당 유저의 프로필이 존재하지 않습니다.", "U014", HttpStatus.BAD_REQUEST);
-    ;
+    NOT_EXIST_PROFILE("해당 유저의 프로필이 존재하지 않습니다.", "U014", HttpStatus.BAD_REQUEST);;
 
     private final String message;
     private final String errorCode;
     private final HttpStatus httpStatus;
 
-    UserExceptionType(String message, String errorCode, HttpStatus httpStatus){
+    UserExceptionType(String message, String errorCode, HttpStatus httpStatus) {
         this.message = message;
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;

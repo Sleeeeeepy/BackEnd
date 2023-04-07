@@ -38,13 +38,14 @@ public class JwtProvider {
 //        refreshSecretKey = Base64.getEncoder().encodeToString(refreshSecretKey.getBytes());
     }
 
-    @PostConstruct protected void init(){
+    @PostConstruct
+    protected void init() {
         accessSecretKey = Base64.getEncoder().encodeToString(accessSecretKey.getBytes());
         refreshSecretKey = Base64.getEncoder().encodeToString(refreshSecretKey.getBytes());
     }
 
 
-    public String createAccessToken(String email){
+    public String createAccessToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
 
         Date now = new Date();
@@ -58,7 +59,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String email){
+    public String createRefreshToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
 
         Date now = new Date();
@@ -72,58 +73,58 @@ public class JwtProvider {
                 .compact();
     }
 
-    public void validateAccessToken(String token){
-        try{
+    public void validateAccessToken(String token) {
+        try {
             Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token);
-        } catch(ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             throw new CustomSecurityException(SecurityExceptionType.EXPIRE_TOKEN);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
         }
     }
 
-    public void validateRefreshToken(String token){
-        try{
+    public void validateRefreshToken(String token) {
+        try {
             Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token);
-        } catch(ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             throw new CustomSecurityException(SecurityExceptionType.EXPIRE_TOKEN);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
         }
     }
 
-    public Authentication getAuthentication(String accessToken){
+    public Authentication getAuthentication(String accessToken) {
         validateAccessToken(accessToken);
         UserDetails userDetails = userSecurityService.loadUserByUsername(getAccessTokenEmail(accessToken));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getAccessTokenEmail(String token){
+    public String getAccessTokenEmail(String token) {
         try {
             return Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
-        }catch(ExpiredJwtException ex){
+        } catch (ExpiredJwtException ex) {
             return ex.getClaims().getSubject();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
         }
     }
 
-    public String getRefreshTokenEmail(String token){
+    public String getRefreshTokenEmail(String token) {
         try {
             return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
-        }catch(ExpiredJwtException ex){
+        } catch (ExpiredJwtException ex) {
             return ex.getClaims().getSubject();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
         }
     }
 
 
-    public String resolveToken(HttpServletRequest req){
+    public String resolveToken(HttpServletRequest req) {
         String token = req.getHeader("Authorization");
 
-        if(token != null){
+        if (token != null) {
             return token;
         }
         return null;

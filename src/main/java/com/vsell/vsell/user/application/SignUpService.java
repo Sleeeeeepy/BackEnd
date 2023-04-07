@@ -15,7 +15,7 @@ public class SignUpService {
     }
 
     @Transactional
-    public void signUp(SignUpDto signUpDto){
+    public void signUp(SignUpDto signUpDto) {
         signUp.signUp(signUpDto);
     }
 

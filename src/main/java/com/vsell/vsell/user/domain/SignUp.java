@@ -17,43 +17,41 @@ public class SignUp {
     }
 
 
-    public void signUp(SignUpDto signUpDto){
-        if(isExistEmail(signUpDto.getEmail())){
+    public void signUp(SignUpDto signUpDto) {
+        if (isExistEmail(signUpDto.getEmail())) {
             throw new CustomUserException(UserExceptionType.DUPLICATE_USER_EMAIL);
         }
-        if(isExistNickName(signUpDto.getNickName())){
+        if (isExistNickName(signUpDto.getNickName())) {
             throw new CustomUserException(UserExceptionType.DUPLICATE_USER_NICKNAME);
         }
 
         VSellUser user = new VSellUser.VSellUserBuilder()
-                            .passwordEncoder(passwordEncoder)
-                            .name(signUpDto.getName())
-                            .birthDate(signUpDto.getBirthDate())
-                            .email(signUpDto.getEmail())
-                            .nickName(signUpDto.getNickName())
-                            .password(signUpDto.getPassword())
-                            .build();
+                .passwordEncoder(passwordEncoder)
+                .name(signUpDto.getName())
+                .birthDate(signUpDto.getBirthDate())
+                .email(signUpDto.getEmail())
+                .nickName(signUpDto.getNickName())
+                .password(signUpDto.getPassword())
+                .build();
 
         userRepository.save(user);
     }
 
-    private boolean isExistEmail(String email){
-        try{
+    private boolean isExistEmail(String email) {
+        try {
             userRepository.findByEmail(email);
-        }
-        catch(CustomUserException ex){
-            if(ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_EMAIL.getErrorCode()))
+        } catch (CustomUserException ex) {
+            if (ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_EMAIL.getErrorCode()))
                 return false;
         }
         return true;
     }
 
-    private boolean isExistNickName(String nickName){
-        try{
+    private boolean isExistNickName(String nickName) {
+        try {
             userRepository.findByNickName(nickName);
-        }
-        catch(CustomUserException ex){
-            if(ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_NICKNAME.getErrorCode()))
+        } catch (CustomUserException ex) {
+            if (ex.getErrorCode().equals(UserExceptionType.NOT_EXIST_NICKNAME.getErrorCode()))
                 return false;
         }
         return true;

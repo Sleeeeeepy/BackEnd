@@ -31,12 +31,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = jwtProvider.resolveToken(request);
 
-        try{
-            if(token != null){
+        try {
+            if (token != null) {
                 Authentication auth = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        }catch(CustomSecurityException ex){
+        } catch (CustomSecurityException ex) {
             setExceptionResponse(response, ex);
             return;
         }
@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void setExceptionResponse(HttpServletResponse response, CustomSecurityException customSecurityException){
+    private void setExceptionResponse(HttpServletResponse response, CustomSecurityException customSecurityException) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         response.setStatus(customSecurityException.getHttpStatus().value());
@@ -54,7 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
         SecurityResponseDto securityResponseDto = new SecurityResponseDto();
         securityResponseDto.setStatus(ResponseStatusType.FAIL);
 
-        Map<String,Object> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("message", customSecurityException.getMessage());
         data.put("errorCode", customSecurityException.getErrorCode());
         securityResponseDto.setData(data);

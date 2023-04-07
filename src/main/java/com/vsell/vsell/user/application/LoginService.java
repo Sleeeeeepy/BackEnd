@@ -1,7 +1,7 @@
 package com.vsell.vsell.user.application;
 
-import com.vsell.vsell.user.domain.Login;
 import com.vsell.vsell.security.dto.JwtTokenDto;
+import com.vsell.vsell.user.domain.Login;
 import com.vsell.vsell.user.dto.LoginDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ public class LoginService {
     }
 
     @Transactional
-    public JwtTokenDto login(LoginDto loginDto){
+    public JwtTokenDto login(LoginDto loginDto) {
         return login.login(loginDto.getEmail(), loginDto.getPassword());
     }
 }

@@ -4,10 +4,7 @@ import com.vsell.vsell.user.domain.ProfileHandler;
 import com.vsell.vsell.user.domain.VSellUser;
 import com.vsell.vsell.user.domain.VSellUserRepository;
 import com.vsell.vsell.user.dto.ProfileDto;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
 
 @Service
 public class ProfileHandlerService {
@@ -20,7 +17,7 @@ public class ProfileHandlerService {
         this.vSellUserRepository = vSellUserRepository;
     }
 
-    public ProfileDto getProfile(String email){
+    public ProfileDto getProfile(String email) {
         VSellUser user = vSellUserRepository.findByEmail(email);
 
         String path = profileHandler.getProfilePath(user);

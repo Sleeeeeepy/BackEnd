@@ -4,8 +4,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 @Component
 public class UserInformationModifier {
 
@@ -19,19 +17,19 @@ public class UserInformationModifier {
         this.profileHandler = profileHandler;
     }
 
-    public void changePassword(VSellUser user, String password){
+    public void changePassword(VSellUser user, String password) {
         user.setPassword(password, passwordEncoder);
 
         vSellUserRepository.save(user);
     }
 
-    public void changeNickName(VSellUser user, String nickName){
+    public void changeNickName(VSellUser user, String nickName) {
         user.setNickName(nickName);
 
         vSellUserRepository.save(user);
     }
 
-    public void changeProfile(VSellUser user, MultipartFile image){
+    public void changeProfile(VSellUser user, MultipartFile image) {
         profileHandler.saveProfile(image, user);
     }
 }

@@ -21,7 +21,7 @@ public class InformationModifyService {
     }
 
     @Transactional
-    public VSellUser changeProfile(MultipartFile profile, String email){
+    public VSellUser changeProfile(MultipartFile profile, String email) {
         VSellUser user = vSellUserRepository.findByEmail(email);
 
         userInformationModifier.changeProfile(user, profile);
@@ -32,7 +32,7 @@ public class InformationModifyService {
     }
 
     @Transactional
-    public VSellUser changeUserInformation(InformationModifyDto informationModifyDto){
+    public VSellUser changeUserInformation(InformationModifyDto informationModifyDto) {
         VSellUser user = vSellUserRepository.findByEmail(informationModifyDto.getEmail());
 
         changeUserPassword(user, informationModifyDto.getChangePassword());
@@ -43,11 +43,11 @@ public class InformationModifyService {
         return user;
     }
 
-    private void changeUserPassword(VSellUser user, String password){
+    private void changeUserPassword(VSellUser user, String password) {
         userInformationModifier.changePassword(user, password);
     }
 
-    private void changeUserNickName(VSellUser user, String nickName){
+    private void changeUserNickName(VSellUser user, String nickName) {
         userInformationModifier.changeNickName(user, nickName);
     }
 }

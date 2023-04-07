@@ -1,9 +1,9 @@
 package com.vsell.vsell.user.presentation;
 
 import com.vsell.vsell.response.ResponseStatusType;
+import com.vsell.vsell.response.SimpleResponseDto;
 import com.vsell.vsell.user.application.SignUpService;
 import com.vsell.vsell.user.dto.SignUpDto;
-import com.vsell.vsell.response.SimpleResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SimpleResponseDto> signUp(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<SimpleResponseDto> signUp(@RequestBody SignUpDto signUpDto) {
         signUpService.signUp(signUpDto);
 
         SimpleResponseDto signUpResponseDto = new SimpleResponseDto();

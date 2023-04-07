@@ -18,7 +18,7 @@ public class VSellUserRepositoryImpl implements VSellUserRepository {
     public VSellUser findByEmail(String email) {
         VSellUser vSellUser = jpaUserRepository.findByEmail(email);
 
-        if(vSellUser == null){
+        if (vSellUser == null) {
             throw new CustomUserException(UserExceptionType.NOT_EXIST_EMAIL);
         }
         return vSellUser;
@@ -28,7 +28,7 @@ public class VSellUserRepositoryImpl implements VSellUserRepository {
     public VSellUser findByNickName(String nickName) {
         VSellUser vSellUser = jpaUserRepository.findByNickName(nickName);
 
-        if(vSellUser == null){
+        if (vSellUser == null) {
             throw new CustomUserException(UserExceptionType.NOT_EXIST_NICKNAME);
         }
 

@@ -2,11 +2,8 @@ package com.vsell.vsell.user.domain.exception;
 
 
 import com.vsell.vsell.response.ResponseStatusType;
-import com.vsell.vsell.user.domain.exception.CustomUserException;
-import jdk.jshell.spi.ExecutionControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -16,7 +13,7 @@ import java.util.Map;
 public class UserExceptionHandler {
 
     @ExceptionHandler(CustomUserException.class)
-    public ResponseEntity<Map<String,Object>> handleCustomSecurityException(CustomUserException ex){
+    public ResponseEntity<Map<String, Object>> handleCustomSecurityException(CustomUserException ex) {
         Map<String, Object> res = new HashMap<>();
         res.put("status", ResponseStatusType.FAIL.getStatus());
 

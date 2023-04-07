@@ -2,10 +2,10 @@ package com.vsell.vsell.security;
 
 import com.vsell.vsell.security.exception.CustomSecurityException;
 import com.vsell.vsell.security.exception.SecurityExceptionType;
-import com.vsell.vsell.user.domain.UserRole;
 import com.vsell.vsell.user.domain.VSellUser;
 import com.vsell.vsell.user.domain.VSellUserRepository;
 import com.vsell.vsell.user.domain.exception.CustomUserException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -28,21 +30,26 @@ public class UserSecurityService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         VSellUser user = null;
-        try{
+        try {
             user = vSellUserRepository.findByEmail(username);
-        }catch(CustomUserException ex){
+        } catch (CustomUserException ex) {
             throw new CustomSecurityException(SecurityExceptionType.NOT_EXIST_EMAIL);
         }
 
         return new User(user.getEmail(), user.getPassword(), user.getUserRoles());
     }
 
-    public String getLoginUser(){
+    public Optional<String> getLoginUser() {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
-        if(user == null){
-            return null;
+        Optional<String> email = Optional.empty();
+
+        if (user instanceof AnonymousAuthenticationToken) {
+            return email;
         }
 
-        return user.getName();
+        email = Optional.of(user.getName());
+
+        return email;
     }
+
 }

@@ -18,9 +18,9 @@ public enum ProfileType {
         this.mediaType = mediaType;
     }
 
-    static public ProfileType findByValue(String value){
-        for(ProfileType type : ProfileType.values()){
-            if(type.name().toLowerCase().equals(value.toLowerCase())){
+    static public ProfileType findByValue(String value) {
+        for (ProfileType type : ProfileType.values()) {
+            if (type.name().toLowerCase().equals(value.toLowerCase())) {
                 return type;
             }
         }

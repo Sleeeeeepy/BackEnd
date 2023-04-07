@@ -10,17 +10,18 @@ public class VSellUserResponseDto {
     private String status;
     private DataDto data = new DataDto();
 
-    public void setStatus(ResponseStatusType responseStatusType){
+    public void setStatus(ResponseStatusType responseStatusType) {
         this.status = responseStatusType.getStatus();
     }
 
-    public void setData(VSellUserDto vSellUserDto){
+    public void setData(VSellUserDto vSellUserDto) {
         this.data.setUser(vSellUserDto);
     }
 
     @Setter
     @Getter
-    public static class DataDto{
+    public static class DataDto {
         private VSellUserDto user;
     }
 }
+

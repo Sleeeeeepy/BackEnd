@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @Component
-public class ProfileHandlerImpl implements ProfileHandler{
+public class ProfileHandlerImpl implements ProfileHandler {
 
     @Value("${vsell.user.profile.path}")
     private String defaultProfilePath;
@@ -32,9 +32,12 @@ public class ProfileHandlerImpl implements ProfileHandler{
         }
 
         String prevPath = user.getProfile().getProfilePath();
-        if(prevPath != null && !prevPath.equals(profilePath)){
+        System.out.println(prevPath);
+        System.out.println(profilePath);
+        if (prevPath != null && !prevPath.equals(profilePath.toString())) {
+            System.out.println("??");
             File prevProfile = new File(prevPath);
-            if(prevProfile.exists()){
+            if (prevProfile.exists()) {
                 prevProfile.delete();
             }
         }
@@ -43,7 +46,7 @@ public class ProfileHandlerImpl implements ProfileHandler{
 
     @Override
     public String getProfilePath(VSellUser user) {
-        if(user.getProfile().getProfilePath() == null){
+        if (user.getProfile().getProfilePath() == null) {
             throw new CustomUserException(UserExceptionType.NOT_EXIST_PROFILE);
         }
         return user.getProfile().getProfilePath();
@@ -70,7 +73,7 @@ public class ProfileHandlerImpl implements ProfileHandler{
         return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     }
 
-    private ProfileType getExtensionFromPath(String path){
+    private ProfileType getExtensionFromPath(String path) {
         StringBuilder extension = new StringBuilder(path.substring(path.lastIndexOf(".") + 1));
 
         return ProfileType.findByValue(extension.toString());
