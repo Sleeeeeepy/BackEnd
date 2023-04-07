@@ -10,7 +10,7 @@ public enum ResponseStatusType {
 
     private final String status;
 
-    ResponseStatusType(String status){
-        this.status=status;
+    ResponseStatusType(String status) {
+        this.status = status;
     }
 }
