@@ -1,16 +1,19 @@
 package com.vsell.vsell.security;
 
+import com.vsell.vsell.security.exception.CustomSecurityException;
+import com.vsell.vsell.security.exception.SecurityExceptionType;
 import com.vsell.vsell.user.domain.UserRole;
 import com.vsell.vsell.user.domain.VSellUser;
 import com.vsell.vsell.user.domain.VSellUserRepository;
-import jakarta.transaction.Transactional;
+import com.vsell.vsell.user.domain.exception.CustomUserException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.EnumSet;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -24,8 +27,22 @@ public class UserSecurityService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        VSellUser user = vSellUserRepository.findByEmail(username);
+        VSellUser user = null;
+        try{
+            user = vSellUserRepository.findByEmail(username);
+        }catch(CustomUserException ex){
+            throw new CustomSecurityException(SecurityExceptionType.NOT_EXIST_EMAIL);
+        }
 
         return new User(user.getEmail(), user.getPassword(), user.getUserRoles());
+    }
+
+    public String getLoginUser(){
+        Authentication user = SecurityContextHolder.getContext().getAuthentication();
+        if(user == null){
+            return null;
+        }
+
+        return user.getName();
     }
 }

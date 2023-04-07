@@ -1,4 +1,4 @@
-package com.vsell.vsell.user.dto;
+package com.vsell.vsell.security.dto;
 
 import lombok.Getter;
 import lombok.Setter;

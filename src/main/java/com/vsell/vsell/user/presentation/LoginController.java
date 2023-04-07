@@ -2,7 +2,7 @@ package com.vsell.vsell.user.presentation;
 
 import com.vsell.vsell.response.ResponseStatusType;
 import com.vsell.vsell.user.application.LoginService;
-import com.vsell.vsell.user.dto.JwtTokenDto;
+import com.vsell.vsell.security.dto.JwtTokenDto;
 import com.vsell.vsell.user.dto.LoginDto;
 import com.vsell.vsell.user.dto.LoginResponseDto;
 import org.springframework.http.HttpStatus;

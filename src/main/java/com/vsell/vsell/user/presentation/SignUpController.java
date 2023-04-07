@@ -2,12 +2,9 @@ package com.vsell.vsell.user.presentation;
 
 import com.vsell.vsell.response.ResponseStatusType;
 import com.vsell.vsell.user.application.SignUpService;
-import com.vsell.vsell.user.domain.SignUp;
 import com.vsell.vsell.user.dto.SignUpDto;
-import com.vsell.vsell.user.dto.SignUpResponseDto;
-import io.netty.handler.codec.http.HttpStatusClass;
+import com.vsell.vsell.response.SimpleResponseDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,13 +21,13 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponseDto> signUp(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<SimpleResponseDto> signUp(@RequestBody SignUpDto signUpDto){
         signUpService.signUp(signUpDto);
 
-        SignUpResponseDto signUpResponseDto = new SignUpResponseDto();
+        SimpleResponseDto signUpResponseDto = new SimpleResponseDto();
         signUpResponseDto.setData(null);
         signUpResponseDto.setStatus(ResponseStatusType.SUCCESS);
 
-        return new ResponseEntity<SignUpResponseDto>(signUpResponseDto, HttpStatus.OK);
+        return new ResponseEntity<SimpleResponseDto>(signUpResponseDto, HttpStatus.OK);
     }
 }

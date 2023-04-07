@@ -18,7 +18,10 @@ public enum UserExceptionType {
     INVALID_PASSWORD_AGAIN("비밀번호가 다릅니다.", "U009", HttpStatus.BAD_REQUEST),
     
     NOT_EXIST_EMAIL("존재하지 않는 이메일 입니다.", "U010", HttpStatus.BAD_REQUEST),
-    NOT_EXIST_NICKNAME("존재하지 않는 유저입니다.", "U011", HttpStatus.BAD_REQUEST)
+    NOT_EXIST_NICKNAME("존재하지 않는 유저입니다.", "U011", HttpStatus.BAD_REQUEST),
+    FORBIDDEN("권한이 없습니다.", "U012", HttpStatus.FORBIDDEN),
+    INVALID_PROFILE_TYPE("이미지 파일이 아닙니다.", "U013", HttpStatus.BAD_REQUEST),
+    NOT_EXIST_PROFILE("해당 유저의 프로필이 존재하지 않습니다.", "U014", HttpStatus.BAD_REQUEST);
     ;
 
     private final String message;

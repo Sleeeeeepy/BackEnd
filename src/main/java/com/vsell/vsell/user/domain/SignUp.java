@@ -18,9 +18,6 @@ public class SignUp {
 
 
     public void signUp(SignUpDto signUpDto){
-        if(!signUpDto.getPassword().equals(signUpDto.getPasswordAgain())){
-            throw new CustomUserException(UserExceptionType.INVALID_PASSWORD_AGAIN);
-        }
         if(isExistEmail(signUpDto.getEmail())){
             throw new CustomUserException(UserExceptionType.DUPLICATE_USER_EMAIL);
         }
@@ -29,11 +26,12 @@ public class SignUp {
         }
 
         VSellUser user = new VSellUser.VSellUserBuilder()
+                            .passwordEncoder(passwordEncoder)
                             .name(signUpDto.getName())
                             .birthDate(signUpDto.getBirthDate())
                             .email(signUpDto.getEmail())
                             .nickName(signUpDto.getNickName())
-                            .password(passwordEncoder.encode(signUpDto.getPassword()))
+                            .password(signUpDto.getPassword())
                             .build();
 
         userRepository.save(user);

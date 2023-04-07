@@ -93,20 +93,30 @@ public class JwtProvider {
     }
 
     public Authentication getAuthentication(String accessToken){
+        validateAccessToken(accessToken);
         UserDetails userDetails = userSecurityService.loadUserByUsername(getAccessTokenEmail(accessToken));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public String getAccessTokenEmail(String token){
-        validateAccessToken(token);
-        return Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
+        try {
+            return Jwts.parser().setSigningKey(accessSecretKey).parseClaimsJws(token).getBody().getSubject();
+        }catch(ExpiredJwtException ex){
+            return ex.getClaims().getSubject();
+        }catch (Exception e){
+            throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
+        }
     }
 
     public String getRefreshTokenEmail(String token){
-        validateRefreshToken(token);
-        return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
-
+        try {
+            return Jwts.parser().setSigningKey(refreshSecretKey).parseClaimsJws(token).getBody().getSubject();
+        }catch(ExpiredJwtException ex){
+            return ex.getClaims().getSubject();
+        }catch (Exception e){
+            throw new CustomSecurityException(SecurityExceptionType.INVALID_TOKEN);
+        }
     }
 
 
@@ -116,7 +126,6 @@ public class JwtProvider {
         if(token != null){
             return token;
         }
-
         return null;
     }
 

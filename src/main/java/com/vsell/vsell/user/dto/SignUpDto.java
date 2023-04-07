@@ -13,7 +13,6 @@ public class SignUpDto {
 
     private String email;
     private String password;
-    private String passwordAgain;
 
     private String name;
     private String nickName;

@@ -1,8 +1,8 @@
 package com.vsell.vsell.user.dto;
 
 import com.vsell.vsell.response.ResponseStatusType;
+import com.vsell.vsell.security.dto.JwtTokenDto;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class LoginResponseDto {

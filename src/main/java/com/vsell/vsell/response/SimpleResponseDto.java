@@ -1,4 +1,4 @@
-package com.vsell.vsell.user.dto;
+package com.vsell.vsell.response;
 
 import com.vsell.vsell.response.ResponseStatusType;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.Map;
 
 @Getter
-public class SignUpResponseDto {
+public class SimpleResponseDto {
     private String status;
     private Map<String, Object> data;
 

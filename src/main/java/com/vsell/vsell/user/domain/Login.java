@@ -4,7 +4,7 @@ package com.vsell.vsell.user.domain;
 import com.vsell.vsell.security.JwtProvider;
 import com.vsell.vsell.user.domain.exception.CustomUserException;
 import com.vsell.vsell.user.domain.exception.UserExceptionType;
-import com.vsell.vsell.user.dto.JwtTokenDto;
+import com.vsell.vsell.security.dto.JwtTokenDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

@@ -4,6 +4,8 @@ import com.vsell.vsell.user.domain.exception.CustomUserException;
 import com.vsell.vsell.user.domain.exception.UserExceptionType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.util.EnumSet;
@@ -40,9 +42,12 @@ public class VSellUser {
     @Enumerated(EnumType.STRING)
     private Set<UserRole> userRoles;
 
+    @JoinColumn(name="profile_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Profile profile;
 
     @Builder
-    public VSellUser(String name, String email, String password, String nickName, Instant birthDate){
+    public VSellUser(String name, String email, String password, String nickName, Instant birthDate, PasswordEncoder passwordEncoder){
         assertValidName(name);
         assertValidEmail(email);
         assertValidPassword(password);
@@ -51,14 +56,14 @@ public class VSellUser {
 
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = passwordEncoder.encode(password);
         this.nickName = nickName;
         this.birthDate = birthDate;
+        this.profile = new Profile();
 
         //TODO: admin은 직접 db쿼리로 수정하도록 할 것인지 상의 필요.
         this.userRoles = EnumSet.noneOf(UserRole.class);
         this.userRoles.add(UserRole.ROLE_USER);
-
     }
 
     private void assertValidName(String name){
@@ -88,9 +93,9 @@ public class VSellUser {
         if(password == null){
             throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
         }
-//        if(password.length() > 20){
-//            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
-//        }
+        if(password.length() > 20){
+            throw new CustomUserException(UserExceptionType.INVALID_USER_PASSWORD);
+        }
     }
 
     private void assertValidNickName(String nickName){
@@ -106,6 +111,16 @@ public class VSellUser {
         if(birthDate == null){
             throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
         }
+    }
+
+    public void setPassword(String password, PasswordEncoder passwordEncoder){
+        assertValidPassword(password);
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void setNickName(String nickName){
+        assertValidNickName(nickName);
+        this.nickName=nickName;
     }
 
 }
