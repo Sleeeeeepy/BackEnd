@@ -113,6 +113,11 @@ public class VSellUser {
         if (birthDate == null) {
             throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
         }
+
+        if(Instant.now().isBefore(birthDate)){
+            throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
+        }
+
     }
 
     public void setPassword(String password, PasswordEncoder passwordEncoder) {
