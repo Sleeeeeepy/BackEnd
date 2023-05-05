@@ -114,7 +114,7 @@ public class VSellUser {
             throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
         }
 
-        if(Instant.now().isBefore(birthDate)){
+        if (Instant.now().isBefore(birthDate)) {
             throw new CustomUserException(UserExceptionType.INVALID_USER_BIRTHDATE);
         }
 

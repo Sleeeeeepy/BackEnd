@@ -15,7 +15,7 @@ public class VSellUserRepositoryImpl implements VSellUserRepository {
     }
 
     @Override
-    public VSellUser findByEmail(String email) {
+    public VSellUser findByEmail(String email) throws CustomUserException {
         VSellUser vSellUser = jpaUserRepository.findByEmail(email);
 
         if (vSellUser == null) {
@@ -25,7 +25,7 @@ public class VSellUserRepositoryImpl implements VSellUserRepository {
     }
 
     @Override
-    public VSellUser findByNickName(String nickName) {
+    public VSellUser findByNickName(String nickName) throws CustomUserException {
         VSellUser vSellUser = jpaUserRepository.findByNickName(nickName);
 
         if (vSellUser == null) {
