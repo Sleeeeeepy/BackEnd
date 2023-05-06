@@ -1,11 +1,9 @@
 package com.vsell.vsell.user;
 
 
-import com.vsell.vsell.security.exception.CustomSecurityException;
 import com.vsell.vsell.user.domain.VSellUser;
 import com.vsell.vsell.user.domain.exception.CustomUserException;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,13 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class VSellUserTest {
@@ -40,14 +36,14 @@ public class VSellUserTest {
 
     @DisplayName("이메일 형태가 아닌 경우 에러 발생")
     @Test
-    public void invalidEmailTest(){
+    public void invalidEmailTest() {
 
         assertThrows(CustomUserException.class, () -> new VSellUser(validName, "12455", validPassword, validNickName, validBirthDate, passwordEncoder));
     }
 
     @DisplayName("닉네임 길이가 너무 긴 경우(10글자 초과) 에러 발생")
     @Test
-    public void longNicknameTest(){
+    public void longNicknameTest() {
         String invalidNickname1 = "가나다라가나다라가나다";
         assertThrows(CustomUserException.class, () -> new VSellUser(validName, validEmail, validPassword, invalidNickname1, validBirthDate, passwordEncoder));
 
@@ -60,7 +56,7 @@ public class VSellUserTest {
 
     @DisplayName("이름 길이가 너무 긴 경우(255) 에러발생")
     @Test
-    public void longNameTest(){
+    public void longNameTest() {
         String invalidName1 = StringUtils.repeat('a', 256);
         assertThrows(CustomUserException.class, () -> new VSellUser(invalidName1, validEmail, validPassword, validNickName, validBirthDate, passwordEncoder));
 
@@ -72,12 +68,11 @@ public class VSellUserTest {
 
     @DisplayName("비밀번호가 너무 긴 경우(20) 에러발생")
     @Test
-    public void longPasswordTest(){
+    public void longPasswordTest() {
         String invalidPassword = StringUtils.repeat('a', 21);
         assertThrows(CustomUserException.class, () -> new VSellUser(validName, validEmail, validPassword, validNickName, validBirthDate, passwordEncoder));
 
     }
-
 
 
 }

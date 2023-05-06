@@ -23,7 +23,7 @@ public class ProfileHandlerImpl implements ProfileHandler {
     public void saveProfile(MultipartFile profile, VSellUser user) {
         String profileExtension = getExtensionFromFile(profile);
         StringBuilder profilePath = new StringBuilder(defaultProfilePath);
-        profilePath.append('/').append(user.getEmail()).append('.').append(profileExtension);
+        profilePath.append(user.getEmail()).append('.').append(profileExtension);
 
         try {
             profile.transferTo(new File(profilePath.toString()));
@@ -32,10 +32,9 @@ public class ProfileHandlerImpl implements ProfileHandler {
         }
 
         String prevPath = user.getProfile().getProfilePath();
-        System.out.println(prevPath);
-        System.out.println(profilePath);
+
         if (prevPath != null && !prevPath.equals(profilePath.toString())) {
-            System.out.println("??");
+
             File prevProfile = new File(prevPath);
             if (prevProfile.exists()) {
                 prevProfile.delete();

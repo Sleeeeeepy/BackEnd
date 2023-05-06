@@ -1,9 +1,11 @@
 package com.vsell.vsell.user.domain;
 
-public interface VSellUserRepository {
-    VSellUser findByEmail(String email);
+import com.vsell.vsell.user.domain.exception.CustomUserException;
 
-    VSellUser findByNickName(String nickName);
+public interface VSellUserRepository {
+    VSellUser findByEmail(String email) throws CustomUserException;
+
+    VSellUser findByNickName(String nickName) throws CustomUserException;
 
     void save(VSellUser user);
 }
